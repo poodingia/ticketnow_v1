@@ -1,0 +1,88 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1739544759983-1
+      author: poodingia
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createSequence:
+            incrementBy: 50
+            sequenceName: feedback_replies_seq
+            startValue: 1
+  - changeSet:
+      id: 1739544759983-2
+      author: poodingia
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createSequence:
+            incrementBy: 50
+            sequenceName: feedbacks_seq
+            startValue: 1
+  - changeSet:
+      id: 1739544759983-3
+      author: poodingia
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_feedback_replies
+                  name: id
+                  type: BIGINT
+              - column:
+                  constraints:
+                    nullable: false
+                  name: created_at
+                  type: DATETIME
+              - column:
+                  constraints:
+                    nullable: false
+                  name: updated_at
+                  type: DATETIME
+              - column:
+                  name: user_id
+                  type: VARCHAR(255)
+              - column:
+                  name: message
+                  type: VARCHAR(255)
+              - column:
+                  name: feedback_id
+                  type: BIGINT
+            tableName: feedback_replies
+  - changeSet:
+      id: 1739544759983-4
+      author: poodingia
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_feedbacks
+                  name: id
+                  type: BIGINT
+              - column:
+                  constraints:
+                    nullable: false
+                  name: created_at
+                  type: DATETIME
+              - column:
+                  constraints:
+                    nullable: false
+                  name: updated_at
+                  type: DATETIME
+              - column:
+                  name: user_id
+                  type: VARCHAR(255)
+              - column:
+                  name: topic
+                  type: VARCHAR(255)
+              - column:
+                  name: message
+                  type: VARCHAR(255)
+            tableName: feedbacks
+

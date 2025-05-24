@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+        .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+        .header { background-color: #1a1a1a; color: white; padding: 20px; }
+        .event-info { background-color: #f5f5f5; padding: 15px; margin: 20px 0; }
+        .order-details { margin: 20px 0; }
+        .total { font-weight: bold; margin-top: 20px; }
+        .terms { font-size: 0.9em; color: #666; margin-top: 20px; }
+        .support { background-color: #f5f5f5; padding: 15px; margin-top: 20px; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h2>Thông tin vé</h2>
+        <p th:text="${eventName}"></p>
+        <p>🕒 <span th:text="${eventDate}"></span></p>
+        <p>📍 <span th:text="${location}"></span></p>
+    </div>
+
+    <div class="event-info">
+        <p><strong>Mã đơn hàng:</strong> <span th:text="${paymentRef}"></span></p>
+        <p>(Sử dụng khi liên hệ với Bộ phận Hỗ trợ Khách hàng)</p>
+    </div>
+
+    <div class="order-details">
+        <h3>Chi tiết đơn hàng</h3>
+        <p><strong>Phương thức thanh toán:</strong> <span th:text="${paymentMethod}"></span></p>
+        <p><strong>Thời gian mua vé:</strong> <span th:text="${paymentDate}"></span></p>
+
+        <table style="width: 100%; margin: 20px 0;">
+            <tr>
+                <th style="text-align: left;">Sản phẩm</th>
+            </tr>
+            <tr th:each="item : ${items}">
+                <td>
+                    <div th:text="${item.description}"></div>
+                    <div style="color: #666; font-size: 0.9em;">
+                        <span th:text="${item.quantity}"></span> vé
+                    </div>
+                </td>
+            </tr>
+        </table>
+
+        <div class="total">
+            <p>Tổng số lượng: <span th:text="${total}"></span></p>
+        </div>
+
+        <div class="total">
+            <p>Sử dụng mã QR ở dưới để tham dự sự kiện</p>
+        </div>
+    </div>
+
+    <div class="terms">
+        <h3>Điều khoản và Điều kiện</h3>
+        <ul>
+            <li>Không hoàn tiền cho vé đã mua</li>
+            <li>Người mua phải xuất trình vé và tuân thủ các yêu cầu của sự kiện mọi lúc</li>
+            <li>Người mua chịu trách nhiệm bảo mật mã vé</li>
+            <li>Bằng việc mua vé, người mua đồng ý với các điều khoản và điều kiện trên</li>
+        </ul>
+    </div>
+
+    <div class="support">
+        <h3>Hỗ trợ</h3>
+        <p>Nếu bạn có bất kỳ câu hỏi nào, vui lòng liên hệ với chúng tôi</p>
+        <p>Email: support@ticketnow.vn</p>
+        <p>Hotline: 1900.6408 (Thứ Hai - Thứ Sáu, 08:30 - 18:30)</p>
+    </div>
+</div>
+</body>
+</html>

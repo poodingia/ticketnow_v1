@@ -1,0 +1,133 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1741182146996-1
+      author: poodingia
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      preConditions:
+        - onFail: MARK_RAN
+        - not:
+            sequenceExists:
+              sequenceName: order_items_seq
+      changes:
+        - createSequence:
+            incrementBy: 50
+            sequenceName: order_items_seq
+            startValue: 1
+  - changeSet:
+      id: 1741182146996-2
+      author: poodingia
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      preConditions:
+        - onFail: MARK_RAN
+        - not:
+            sequenceExists:
+              sequenceName: orders_seq
+      changes:
+        - createSequence:
+            incrementBy: 50
+            sequenceName: orders_seq
+            startValue: 1
+  - changeSet:
+      id: 1741182146996-3
+      author: poodingia
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      preConditions:
+        - onFail: MARK_RAN
+        - not:
+            tableExists:
+              tableName: order_items
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_order_items
+                  name: id
+                  type: INT
+              - column:
+                  name: ticket_id
+                  type: INT
+              - column:
+                  name: quantity
+                  type: INT
+              - column:
+                  name: price
+                  type: DOUBLE
+              - column:
+                  name: order_id
+                  type: INT
+              - column:
+                  name: is_type
+                  type: BOOLEAN
+            tableName: order_items
+  - changeSet:
+      id: 1741182146996-4
+      author: poodingia
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      preConditions:
+        - onFail: MARK_RAN
+        - not:
+            tableExists:
+              tableName: orders
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_orders
+                  name: id
+                  type: INT
+              - column:
+                  name: price
+                  type: DOUBLE
+              - column:
+                  name: quantity
+                  type: DOUBLE
+              - column:
+                  name: user_id
+                  type: VARCHAR(255)
+              - column:
+                  name: status
+                  type: SMALLINT
+              - column:
+                  name: email
+                  type: VARCHAR(255)
+              - column:
+                  name: name
+                  type: VARCHAR(255)
+              - column:
+                  name: payment_ref
+                  type: VARCHAR(255)
+              - column:
+                  name: coupon_code
+                  type: VARCHAR(255)
+              - column:
+                  name: payment_method
+                  type: VARCHAR(255)
+              - column:
+                  name: event_id
+                  type: INT
+              - column:
+                  name: email_status
+                  type: VARCHAR(255)
+            tableName: orders
+  - changeSet:
+      id: 1741182146996-5
+      author: poodingia
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      preConditions:
+        - onFail: MARK_RAN
+        - not:
+            foreignKeyConstraintExists:
+              foreignKeyName: FK_ORDER_ITEMS_ON_ORDER
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: order_id
+            baseTableName: order_items
+            constraintName: FK_ORDER_ITEMS_ON_ORDER
+            referencedColumnNames: id
+            referencedTableName: orders

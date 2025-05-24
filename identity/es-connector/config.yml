@@ -1,0 +1,10 @@
+connectors:
+  -
+    connector_id: "qVqOqZUB-hhPvo_U5btx"
+    service_type: "postgresql"
+    api_key: "cWxxT3FaVUItaGhQdm9fVTVidkE6a1J6MmFHNzNTR2lkTzZPdFNDVTk5Zw=="
+
+elasticsearch:
+  host: "https://172.17.0.1:9200"
+  api_key: "cWxxT3FaVUItaGhQdm9fVTVidkE6a1J6MmFHNzNTR2lkTzZPdFNDVTk5Zw=="
+elasticsearch.verify_certs: false

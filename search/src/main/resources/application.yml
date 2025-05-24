@@ -1,0 +1,29 @@
+spring:
+  application:
+    name: search
+  cloud:
+    consul:
+      enabled: true
+      host: localhost
+      port: 8500
+      discovery:
+        prefer-ip-address: true
+        instance-id: ${spring.application.name}:${random.value}
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: http://localhost:8080/realms/ticketnow/protocol/openid-connect/certs
+  elasticsearch:
+    uris: http://localhost:9200
+
+
+server:
+  port: 8084
+
+logging:
+  level:
+    root: INFO
+    com.ticketnow.search: DEBUG
+    org.springframework.web: ERROR
+    org.springframework.data.elasticsearch.client.WIRE: TRACE

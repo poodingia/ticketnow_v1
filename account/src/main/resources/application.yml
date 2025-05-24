@@ -1,0 +1,48 @@
+spring:
+  application:
+    name: account
+  config:
+    import: optional:consul:localhost:8500
+  datasource:
+    driverClassName: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/feedback?user=keycloak&password=keycloak
+  liquibase:
+    change-log: classpath:config/liquibase/master_changelog.yml
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        jdbc:
+          batch_size: 10
+        order_inserts: true
+        format_sql: true
+    database: postgresql
+  cloud:
+    consul:
+      enabled: true
+      host: localhost
+      port: 8500
+      discovery:
+        prefer-ip-address: true
+        instance-id: ${spring.application.name}:${random.value}
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: http://localhost:8080/realms/ticketnow/protocol/openid-connect/certs
+
+keycloak:
+  auth-server-url: http://localhost:8080
+  realm: ticketnow
+  resource: account-management
+  credentials:
+    secret: y4ECQkWCHRlHkAZ4VlVpmXJJaK27KBJe
+
+server:
+  port: 8082
+
+logging:
+  level:
+    root: INFO
+    com.ticketnow.account: DEBUG
+    org.springframework.web: ERROR

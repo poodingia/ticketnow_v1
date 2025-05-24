@@ -1,0 +1,13 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1743088140801-1
+      author: poodingia
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addColumn:
+            columns:
+              - column:
+                  name: created_at
+                  type: DATETIME
+            tableName: orders
+

@@ -1,0 +1,61 @@
+spring:
+  application:
+    name: adminbff
+  cloud:
+    consul:
+      host: 172.17.0.1
+      port: 8500
+      discovery:
+        enabled: true
+        prefer-ip-address: true
+        instance-id: ${spring.application.name}:${random.value}
+    gateway:
+      default-filters:
+      routes:
+        - id: crud
+          uri: lb://crud
+          predicates:
+            - Path=/api/crud/**
+          filters:
+            - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin
+            - TokenRelay=
+        - id: account
+          uri: lb://account
+          predicates:
+            - Path=/api/account/**, /api/feedback/**
+          filters:
+            - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin
+            - TokenRelay=
+        - id: order
+          uri: lb://order
+          predicates:
+            - Path=/api/order/**
+          filters:
+            - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin
+            - TokenRelay=
+        - id: nextjs
+          uri: http://localhost:3001
+          predicates:
+            - Path=/**
+
+  security:
+    oauth2:
+      client:
+        provider:
+          keycloak:
+            user-name-attribute: preferred_username
+            issuer-uri: http://localhost:8080/realms/ticketnow
+        registration:
+          adminbff:
+            provider: keycloak
+            client-id: adminbff
+            client-secret: 3HAEn7izQbUcwzn4tRuj33d68qrqUdBB
+            authorization-grant-type: authorization_code
+            scope: openid, profile, email, roles
+server:
+  port: 28081
+
+logging:
+  level:
+    org.springframework.security: TRACE
+    org.springframework.cloud.gateway: DEBUG

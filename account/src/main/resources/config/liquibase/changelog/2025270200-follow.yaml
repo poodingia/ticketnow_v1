@@ -1,0 +1,22 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1740668858085-5
+      author: poodingia
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: pk_users_events_follow
+                  name: user_id
+                  type: VARCHAR(255)
+              - column:
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: pk_users_events_follow
+                  name: event_id
+                  type: INT
+            tableName: users_events_follow
+

@@ -1,0 +1,95 @@
+services:
+  consul:
+    image: hashicorp/consul:latest
+    container_name: consul
+    restart: always
+    ports:
+      - "8500:8500/tcp"
+      - "8600:8600/udp"
+    command: 'consul agent -server -ui -node=server-1 -bootstrap-expect=1 -client=0.0.0.0 -data-dir=/consul/data'
+    networks:
+      - ticketnow
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:26.0.7
+    container_name: keycloak
+    restart: always
+    environment:
+      KC_DB: postgres
+      KC_DB_URL: jdbc:postgresql://postgres:5432/keycloak
+      KC_DB_USERNAME: keycloak
+      KC_DB_PASSWORD: keycloak
+      KEYCLOAK_USER: developer
+      KEYCLOAK_PASSWORD: developer
+      KC_BOOTSTRAP_ADMIN_USERNAME: admin
+      KC_BOOTSTRAP_ADMIN_PASSWORD: admin
+      KC_METRICS_ENABLED: true
+      KC_HTTP_ENABLED: true
+    ports:
+      - "8080:8080/tcp"
+      - "8090:8090/tcp"
+    command: 'start-dev --import-realm'
+    volumes:
+      - ./realm-export.json:/opt/keycloak/data/import/realm-export.json
+      - ./themes:/opt/keycloak/providers/
+    networks:
+      - ticketnow
+
+  postgres:
+    image: postgres:17
+    container_name: postgres
+    restart: always
+    environment:
+      POSTGRES_DB: keycloak
+      POSTGRES_USER: keycloak
+      POSTGRES_PASSWORD: keycloak
+    volumes:
+      - ./db-data:/var/lib/postgresql/data/
+      - ./sql:/docker-entrypoint-initdb.d/:ro
+    ports:
+      - "5432:5432/tcp"
+    networks:
+      - ticketnow
+    
+  kafka:
+    image: docker.io/bitnami/kafka:3.9
+    container_name: kafka
+    restart: always
+    ports:
+      - "9092:9092"
+      - "29092:29092"  # Expose this port for internal Docker communication
+    environment:
+      KAFKA_CFG_NODE_ID: 0
+      KAFKA_CFG_PROCESS_ROLES: controller,broker
+      KAFKA_CFG_CONTROLLER_QUORUM_VOTERS: 0@kafka:9093
+      KAFKA_CFG_LISTENERS: CONTROLLER://:9093,PLAINTEXT://0.0.0.0:29092,PLAINTEXT_HOST://0.0.0.0:9092
+      KAFKA_CFG_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
+      KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP: CONTROLLER:SASL_PLAINTEXT,PLAINTEXT:SASL_PLAINTEXT,PLAINTEXT_HOST:SASL_PLAINTEXT
+      KAFKA_CFG_CONTROLLER_LISTENER_NAMES: CONTROLLER
+      KAFKA_CFG_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+
+      KAFKA_CFG_SASL_ENABLED_MECHANISMS: PLAIN
+      KAFKA_CFG_SASL_MECHANISM_INTER_BROKER_PROTOCOL: PLAIN
+      KAFKA_CLIENT_USERS: user
+      KAFKA_CLIENT_PASSWORDS: password
+      KAFKA_CFG_SASL_MECHANISM_CONTROLLER_PROTOCOL: PLAIN
+
+      ALLOW_PLAINTEXT_LISTENER: yes
+      KAFKA_CFG_AUTO_CREATE_TOPICS_ENABLE: "true"
+    networks:
+      - ticketnow
+
+  redis:
+    image: redis:latest
+    container_name: redis
+    restart: always
+    command: ["redis-server",  "--notify-keyspace-events", "Ex"]
+    ports:
+      - "6379:6379"
+    networks:
+      - ticketnow
+
+networks:
+  ticketnow:
+    driver: bridge
+

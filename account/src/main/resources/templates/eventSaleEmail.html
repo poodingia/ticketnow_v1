@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Thông báo mở bán vé</title>
+    <style>
+        body { font-family: Arial, sans-serif; color: #333; }
+        .container { max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #ddd; }
+        .header { background-color: #1a1a1a; color: white; padding: 15px; text-align: center; }
+        .content { margin: 20px 0; }
+        .cta { text-align: center; margin-top: 20px; }
+        .cta a { background-color: #ff6600; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; }
+        .footer { font-size: 0.9em; color: #666; margin-top: 20px; text-align: center; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h2>🎟️ Vé sắp mở bán! 🎉</h2>
+    </div>
+
+    <div class="content">
+        <p>Xin chào <strong th:text="${username}"></strong>,</p>
+        <p>Chúng tôi rất hào hứng thông báo rằng vé cho sự kiện <strong th:text="${eventName}"></strong> sẽ chính thức mở bán vào ngày mai!</p>
+
+        <div class="cta">
+            <p>Đừng bỏ lỡ cơ hội sở hữu vé cho sự kiện hấp dẫn này!</p>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>Nếu bạn có bất kỳ câu hỏi nào, vui lòng liên hệ với chúng tôi <br>
+            📧 <a href="mailto:support@ticketnow.vn">support@ticketnow.vn</a> | ☎️ 1900.6408</p>
+    </div>
+</div>
+</body>
+</html>

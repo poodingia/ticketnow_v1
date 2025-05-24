@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Thông báo thay đổi thông tin sự kiện</title>
+    <style>
+        body { font-family: Arial, sans-serif; color: #333; }
+        .container { max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #ddd; }
+        .content { margin: 20px 0; }
+        .cta { text-align: center; margin-top: 20px; }
+        .cta a { background-color: #ff6600; color: white; text-decoration: none; border-radius: 5px; }
+        .footer { font-size: 0.9em; color: #666; margin-top: 20px; text-align: center; }
+    </style>
+</head>
+<body>
+<div class="container">
+
+    <div class="content">
+        <p>Xin chào<strong th:text="${username}"></strong>,</p>
+        <p>Sự kiện bạn theo dõi <strong th:text="${eventName}"></strong> đã có sự thay đổi về thông tin</p>
+
+        <div class="cta">
+            <p>Xin hãy kiểm tra lại trên website Hệ thống bán vé</p>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>Nếu có câu hỏi xin hãy liên hệ chúng tôi <br>
+            📧 <a href="mailto:support@ticketnow.vn">support@ticketnow.vn</a> | ☎️ 1900.6408</p>
+    </div>
+</div>
+</body>
+</html>

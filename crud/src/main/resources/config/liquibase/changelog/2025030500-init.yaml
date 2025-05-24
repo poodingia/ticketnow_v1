@@ -1,0 +1,298 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1741182544358-1
+      author: poodingia
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      preConditions:
+        - onFail: MARK_RAN
+        - not:
+            sequenceExists:
+              sequenceName: tickets_seq
+      changes:
+        - createSequence:
+            incrementBy: 50
+            sequenceName: tickets_seq
+            startValue: 1
+  - changeSet:
+      id: 1741182544358-2
+      author: poodingia
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      preConditions:
+        - onFail: MARK_RAN
+        - not:
+            tableExists:
+              tableName: cities
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_cities
+                  name: id
+                  type: INT
+              - column:
+                  name: name
+                  type: VARCHAR(255)
+            tableName: cities
+  - changeSet:
+      id: 1741182544358-3
+      author: poodingia
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      preConditions:
+        - onFail: MARK_RAN
+        - not:
+            tableExists:
+              tableName: coupons
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_coupons
+                  name: id
+                  type: INT
+              - column:
+                  name: event_id
+                  type: INT
+              - column:
+                  name: code
+                  type: VARCHAR(255)
+              - column:
+                  name: category
+                  type: VARCHAR(255)
+              - column:
+                  name: value
+                  type: FLOAT
+              - column:
+                  name: quantity
+                  type: INT
+              - column:
+                  name: used
+                  type: INT
+            tableName: coupons
+  - changeSet:
+      id: 1741182544358-4
+      author: poodingia
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      preConditions:
+        - onFail: MARK_RAN
+        - not:
+            tableExists:
+              tableName: events
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_events
+                  name: id
+                  type: INT
+              - column:
+                  name: title
+                  type: VARCHAR(255)
+              - column:
+                  name: location
+                  type: VARCHAR(255)
+              - column:
+                  name: description
+                  type: text
+              - column:
+                  name: bg_image_path
+                  type: VARCHAR(255)
+              - column:
+                  name: date
+                  type: DATETIME
+              - column:
+                  name: account_id
+                  type: INT
+              - column:
+                  name: max
+                  type: INT
+              - column:
+                  name: revenue
+                  type: FLOAT
+              - column:
+                  name: start_sale_date
+                  type: DATETIME
+              - column:
+                  name: end_sale_date
+                  type: DATETIME
+              - column:
+                  name: is_canceled
+                  type: BOOLEAN
+              - column:
+                  name: is_approved
+                  type: BOOLEAN
+              - column:
+                  name: user_id
+                  type: VARCHAR(255)
+              - column:
+                  name: booking_capacity
+                  type: INT
+              - column:
+                  name: city_id
+                  type: INT
+              - column:
+                  name: category
+                  type: VARCHAR(255)
+            tableName: events
+  - changeSet:
+      id: 1741182544358-5
+      author: poodingia
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      preConditions:
+        - onFail: MARK_RAN
+        - not:
+            tableExists:
+              tableName: ticket_types
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_ticket_types
+                  name: id
+                  type: INT
+              - column:
+                  name: description
+                  type: VARCHAR(255)
+              - column:
+                  name: price
+                  type: FLOAT
+              - column:
+                  name: quantity
+                  type: INT
+              - column:
+                  name: reserved_quantity
+                  type: INT
+              - column:
+                  name: bought_directly
+                  type: BOOLEAN
+              - column:
+                  name: event_id
+                  type: INT
+            tableName: ticket_types
+  - changeSet:
+      id: 1741182544358-6
+      author: poodingia
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      preConditions:
+        - onFail: MARK_RAN
+        - not:
+            tableExists:
+              tableName: tickets
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_tickets
+                  name: id
+                  type: INT
+              - column:
+                  name: status
+                  type: BOOLEAN
+              - column:
+                  name: owner_id
+                  type: INT
+              - column:
+                  name: type_id
+                  type: INT
+              - column:
+                  name: event_id
+                  type: INT
+            tableName: tickets
+  - changeSet:
+      id: 1741182544358-7
+      author: poodingia
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      preConditions:
+        - onFail: MARK_RAN
+        - not:
+            foreignKeyConstraintExists:
+              foreignKeyName: FK_COUPONS_ON_EVENT
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: event_id
+            baseTableName: coupons
+            constraintName: FK_COUPONS_ON_EVENT
+            referencedColumnNames: id
+            referencedTableName: events
+  - changeSet:
+      id: 1741182544358-8
+      author: poodingia
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      preConditions:
+        - onFail: MARK_RAN
+        - not:
+            foreignKeyConstraintExists:
+              foreignKeyName: FK_EVENTS_ON_CITY
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: city_id
+            baseTableName: events
+            constraintName: FK_EVENTS_ON_CITY
+            referencedColumnNames: id
+            referencedTableName: cities
+  - changeSet:
+      id: 1741182544358-9
+      author: poodingia
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      preConditions:
+        - onFail: MARK_RAN
+        - not:
+            foreignKeyConstraintExists:
+              foreignKeyName: FK_TICKETS_ON_EVENT
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: event_id
+            baseTableName: tickets
+            constraintName: FK_TICKETS_ON_EVENT
+            referencedColumnNames: id
+            referencedTableName: events
+  - changeSet:
+      id: 1741182544358-10
+      author: poodingia
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      preConditions:
+        - onFail: MARK_RAN
+        - not:
+            foreignKeyConstraintExists:
+              foreignKeyName: FK_TICKETS_ON_TYPE
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: type_id
+            baseTableName: tickets
+            constraintName: FK_TICKETS_ON_TYPE
+            referencedColumnNames: id
+            referencedTableName: ticket_types
+  - changeSet:
+      id: 1741182544358-11
+      author: poodingia
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      preConditions:
+        - onFail: MARK_RAN
+        - not:
+            foreignKeyConstraintExists:
+              foreignKeyName: FK_TICKET_TYPES_ON_EVENT
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: event_id
+            baseTableName: ticket_types
+            constraintName: FK_TICKET_TYPES_ON_EVENT
+            referencedColumnNames: id
+            referencedTableName: events
